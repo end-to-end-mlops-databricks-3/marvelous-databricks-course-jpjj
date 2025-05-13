@@ -1,0 +1,329 @@
+2025-05-13 22:05:23.893 | INFO     | __main__:<module>:16 - Configuration loaded:
+2025-05-13 22:05:23.895 | INFO     | __main__:<module>:17 - !!python/object:doordash_eta.config.ProjectConfig
+__dict__:
+  cat_features:
+  - market_id
+  - store_id
+  - store_primary_category
+  - order_protocol
+  catalog_name: mlops_dev
+  num_features:
+  - total_items
+  - subtotal
+  - num_distinct_items
+  - min_item_price
+  - max_item_price
+  - total_onshift_dashers
+  - total_busy_dashers
+  - total_outstanding_orders
+  - estimated_order_place_duration
+  - estimated_store_to_consumer_driving_duration
+  schema_name: jenspete
+  target: leadtime_in_s
+__pydantic_extra__: null
+__pydantic_fields_set__: !!set
+  cat_features: null
+  catalog_name: null
+  num_features: null
+  schema_name: null
+  target: null
+__pydantic_private__: null
+
+2025-05-13 22:09:36.179 | INFO     | __main__:<module>:3 - Training set shape: %s
+2025-05-13 22:09:36.182 | INFO     | __main__:<module>:4 - Test set shape: %s
+2025-05-13 22:10:02.514 | INFO     | __main__:<module>:16 - Configuration loaded:
+2025-05-13 22:10:02.517 | INFO     | __main__:<module>:17 - !!python/object:doordash_eta.config.ProjectConfig
+__dict__:
+  cat_features:
+  - market_id
+  - store_id
+  - store_primary_category
+  - order_protocol
+  catalog_name: mlops_dev
+  num_features:
+  - total_items
+  - subtotal
+  - num_distinct_items
+  - min_item_price
+  - max_item_price
+  - total_onshift_dashers
+  - total_busy_dashers
+  - total_outstanding_orders
+  - estimated_order_place_duration
+  - estimated_store_to_consumer_driving_duration
+  schema_name: jenspete
+  target: leadtime_in_s
+__pydantic_extra__: null
+__pydantic_fields_set__: !!set
+  cat_features: null
+  catalog_name: null
+  num_features: null
+  schema_name: null
+  target: null
+__pydantic_private__: null
+
+2025-05-13 22:12:58.576 | INFO     | __main__:<module>:16 - Configuration loaded:
+2025-05-13 22:12:58.578 | INFO     | __main__:<module>:17 - !!python/object:doordash_eta.config.ProjectConfig
+__dict__:
+  cat_features:
+  - market_id
+  - store_id
+  - store_primary_category
+  - order_protocol
+  catalog_name: mlops_dev
+  num_features:
+  - total_items
+  - subtotal
+  - num_distinct_items
+  - min_item_price
+  - max_item_price
+  - total_onshift_dashers
+  - total_busy_dashers
+  - total_outstanding_orders
+  - estimated_order_place_duration
+  - estimated_store_to_consumer_driving_duration
+  schema_name: jenspete
+  target: leadtime_in_s
+__pydantic_extra__: null
+__pydantic_fields_set__: !!set
+  cat_features: null
+  catalog_name: null
+  num_features: null
+  schema_name: null
+  target: null
+__pydantic_private__: null
+
+2025-05-13 22:14:48.606 | INFO     | __main__:<module>:16 - Configuration loaded:
+2025-05-13 22:14:48.609 | INFO     | __main__:<module>:17 - !!python/object:doordash_eta.config.ProjectConfig
+__dict__:
+  cat_features:
+  - market_id
+  - store_id
+  - store_primary_category
+  - order_protocol
+  catalog_name: mlops_dev
+  num_features:
+  - total_items
+  - subtotal
+  - num_distinct_items
+  - min_item_price
+  - max_item_price
+  - total_onshift_dashers
+  - total_busy_dashers
+  - total_outstanding_orders
+  - estimated_order_place_duration
+  - estimated_store_to_consumer_driving_duration
+  schema_name: jenspete
+  target: leadtime_in_s
+__pydantic_extra__: null
+__pydantic_fields_set__: !!set
+  cat_features: null
+  catalog_name: null
+  num_features: null
+  schema_name: null
+  target: null
+__pydantic_private__: null
+
+2025-05-13 22:22:15.924 | INFO     | __main__:<module>:16 - Configuration loaded:
+2025-05-13 22:22:15.927 | INFO     | __main__:<module>:17 - !!python/object:doordash_eta.config.ProjectConfig
+__dict__:
+  cat_features:
+  - market_id
+  - store_id
+  - store_primary_category
+  - order_protocol
+  catalog_name: mlops_dev
+  num_features:
+  - total_items
+  - subtotal
+  - num_distinct_items
+  - min_item_price
+  - max_item_price
+  - total_onshift_dashers
+  - total_busy_dashers
+  - total_outstanding_orders
+  - estimated_order_place_duration
+  - estimated_store_to_consumer_driving_duration
+  schema_name: jenspete
+  target: leadtime_in_s
+__pydantic_extra__: null
+__pydantic_fields_set__: !!set
+  cat_features: null
+  catalog_name: null
+  num_features: null
+  schema_name: null
+  target: null
+__pydantic_private__: null
+
+2025-05-13 22:22:16.005 | INFO     | __main__:<module>:16 - Configuration loaded:
+2025-05-13 22:22:16.009 | INFO     | __main__:<module>:17 - !!python/object:doordash_eta.config.ProjectConfig
+__dict__:
+  cat_features:
+  - market_id
+  - store_id
+  - store_primary_category
+  - order_protocol
+  catalog_name: mlops_dev
+  num_features:
+  - total_items
+  - subtotal
+  - num_distinct_items
+  - min_item_price
+  - max_item_price
+  - total_onshift_dashers
+  - total_busy_dashers
+  - total_outstanding_orders
+  - estimated_order_place_duration
+  - estimated_store_to_consumer_driving_duration
+  schema_name: jenspete
+  target: leadtime_in_s
+__pydantic_extra__: null
+__pydantic_fields_set__: !!set
+  cat_features: null
+  catalog_name: null
+  num_features: null
+  schema_name: null
+  target: null
+__pydantic_private__: null
+
+2025-05-13 22:22:21.331 | INFO     | __main__:<module>:16 - Configuration loaded:
+2025-05-13 22:22:21.336 | INFO     | __main__:<module>:17 - !!python/object:doordash_eta.config.ProjectConfig
+__dict__:
+  cat_features:
+  - market_id
+  - store_id
+  - store_primary_category
+  - order_protocol
+  catalog_name: mlops_dev
+  num_features:
+  - total_items
+  - subtotal
+  - num_distinct_items
+  - min_item_price
+  - max_item_price
+  - total_onshift_dashers
+  - total_busy_dashers
+  - total_outstanding_orders
+  - estimated_order_place_duration
+  - estimated_store_to_consumer_driving_duration
+  schema_name: jenspete
+  target: leadtime_in_s
+__pydantic_extra__: null
+__pydantic_fields_set__: !!set
+  cat_features: null
+  catalog_name: null
+  num_features: null
+  schema_name: null
+  target: null
+__pydantic_private__: null
+
+2025-05-13 22:25:05.923 | INFO     | __main__:<module>:16 - Configuration loaded:
+2025-05-13 22:25:05.926 | INFO     | __main__:<module>:17 - !!python/object:doordash_eta.config.ProjectConfig
+__dict__:
+  cat_features:
+  - market_id
+  - store_id
+  - store_primary_category
+  - order_protocol
+  catalog_name: mlops_dev
+  num_features:
+  - total_items
+  - subtotal
+  - num_distinct_items
+  - min_item_price
+  - max_item_price
+  - total_onshift_dashers
+  - total_busy_dashers
+  - total_outstanding_orders
+  - estimated_order_place_duration
+  - estimated_store_to_consumer_driving_duration
+  schema_name: jenspete
+  target: leadtime_in_s
+__pydantic_extra__: null
+__pydantic_fields_set__: !!set
+  cat_features: null
+  catalog_name: null
+  num_features: null
+  schema_name: null
+  target: null
+__pydantic_private__: null
+
+2025-05-13 22:25:07.195 | INFO     | __main__:<module>:9 - Data preprocessing: Elapsed time: 0.3705 seconds
+2025-05-13 22:25:28.322 | INFO     | __main__:<module>:3 - Training set shape: %s
+2025-05-13 22:25:28.324 | INFO     | __main__:<module>:4 - Test set shape: %s
+2025-05-13 22:29:06.945 | INFO     | __main__:<module>:16 - Configuration loaded:
+2025-05-13 22:29:06.948 | INFO     | __main__:<module>:17 - !!python/object:doordash_eta.config.ProjectConfig
+__dict__:
+  cat_features:
+  - market_id
+  - store_id
+  - store_primary_category
+  - order_protocol
+  catalog_name: mlops_dev
+  num_features:
+  - total_items
+  - subtotal
+  - num_distinct_items
+  - min_item_price
+  - max_item_price
+  - total_onshift_dashers
+  - total_busy_dashers
+  - total_outstanding_orders
+  - estimated_order_place_duration
+  - estimated_store_to_consumer_driving_duration
+  schema_name: jenspete
+  target: leadtime_in_s
+  time_features:
+  - created_at
+__pydantic_extra__: null
+__pydantic_fields_set__: !!set
+  cat_features: null
+  catalog_name: null
+  num_features: null
+  schema_name: null
+  target: null
+  time_features: null
+__pydantic_private__: null
+
+2025-05-13 22:29:08.878 | INFO     | __main__:<module>:9 - Data preprocessing: Elapsed time: 0.5947 seconds
+2025-05-13 22:29:09.067 | INFO     | __main__:<module>:3 - Training set shape: %s
+2025-05-13 22:29:09.068 | INFO     | __main__:<module>:4 - Test set shape: %s
+2025-05-13 22:34:15.475 | INFO     | __main__:<module>:16 - Configuration loaded:
+2025-05-13 22:34:15.482 | INFO     | __main__:<module>:17 - !!python/object:doordash_eta.config.ProjectConfig
+__dict__:
+  cat_features:
+  - market_id
+  - store_id
+  - store_primary_category
+  - order_protocol
+  catalog_name: mlops_dev
+  num_features:
+  - total_items
+  - subtotal
+  - num_distinct_items
+  - min_item_price
+  - max_item_price
+  - total_onshift_dashers
+  - total_busy_dashers
+  - total_outstanding_orders
+  - estimated_order_place_duration
+  - estimated_store_to_consumer_driving_duration
+  schema_name: jenspete
+  target: leadtime_in_s
+  time_features:
+  - created_at
+__pydantic_extra__: null
+__pydantic_fields_set__: !!set
+  cat_features: null
+  catalog_name: null
+  num_features: null
+  schema_name: null
+  target: null
+  time_features: null
+__pydantic_private__: null
+
+2025-05-13 22:34:16.545 | INFO     | __main__:<module>:9 - Data preprocessing: Elapsed time: 0.3526 seconds
+2025-05-13 22:34:16.621 | INFO     | __main__:<module>:3 - Training set shape: %s
+2025-05-13 22:34:16.622 | INFO     | __main__:<module>:4 - Test set shape: %s
+2025-05-13 22:34:16.775 | INFO     | __main__:<module>:2 - Saving data to catalog
+2025-05-13 22:41:06.895 | INFO     | __main__:<module>:6 - Enable change data feed
