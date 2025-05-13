@@ -24,7 +24,6 @@ num_features:
 
 time_features:
   - created_at
-  - actual_delivery_time
 
 cat_features:
   - market_id
@@ -33,4 +32,4 @@ cat_features:
   - order_protocol
 
 
-target: SalePrice
+target: leadtime_in_s
