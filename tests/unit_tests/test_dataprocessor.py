@@ -44,7 +44,7 @@ def test_column_transformations(sample_data: pd.DataFrame, config: ProjectConfig
     """Test column transformations performed by the DataProcessor.
 
     This function checks if specific column transformations are applied correctly,
-    such as removing the actual_delivery_time column and changing data types of Id and market_id.
+    such as removing the actual_delivery_time column and changing data types of id and market_id.
 
     :param sample_data: Input DataFrame containing sample data
     :param config: Configuration object for the project
@@ -54,7 +54,7 @@ def test_column_transformations(sample_data: pd.DataFrame, config: ProjectConfig
     processor.preprocess()
 
     assert "actual_delivery_time" not in processor.df.columns
-    assert processor.df["Id"].dtype == "object"
+    assert processor.df["id"].dtype == "object"
     assert processor.df["market_id"].dtype == "category"
 
 
@@ -72,7 +72,7 @@ def test_missing_value_handling(sample_data: pd.DataFrame, config: ProjectConfig
     processor.preprocess()
 
     assert processor.df["total_busy_dashers"].isna().sum() == 0
-    assert (processor.df["market_id"] == "1.0").sum() > 0
+    assert (processor.df["market_id"] == 1.0).sum() > 0
     assert (processor.df["total_outstanding_orders"] == 0).sum() > 0
 
 
@@ -89,7 +89,7 @@ def test_column_selection(sample_data: pd.DataFrame, config: ProjectConfig, spar
     processor = DataProcessor(pandas_df=sample_data, config=config, spark=spark_session)
     processor.preprocess()
 
-    expected_columns = config.cat_features + config.num_features + config.time_features + [config.target, "Id"]
+    expected_columns = config.cat_features + config.num_features + config.time_features + [config.target, "id"]
     assert set(processor.df.columns) == set(expected_columns)
 
 
