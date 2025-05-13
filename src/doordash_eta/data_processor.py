@@ -46,7 +46,7 @@ class DataProcessor:
             self.df["actual_delivery_time"], format=dt_format
         )
         self.df["created_at"] = pd.to_datetime(self.df["created_at"], format=dt_format)
-
+        self.df["actual_delivery_time"].drop(inplace=True)
         # Extract target and relevant features
         target = self.config.target
         self.df[target] = (
