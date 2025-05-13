@@ -24,9 +24,7 @@ def spark_session() -> SparkSession:
         .appName(spark_config.app_name)
         .config("spark.executor.cores", spark_config.spark_executor_cores)
         .config("spark.executor.instances", spark_config.spark_executor_instances)
-        .config(
-            "spark.sql.shuffle.partitions", spark_config.spark_sql_shuffle_partitions
-        )
+        .config("spark.sql.shuffle.partitions", spark_config.spark_sql_shuffle_partitions)
         .config("spark.driver.bindAddress", spark_config.spark_driver_bindAddress)
         .getOrCreate()
     )
