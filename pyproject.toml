@@ -28,6 +28,7 @@ dev = ["databricks-connect==15.4.5",
        "ipykernel>=6.29.5, <7",
        "pip>=24.2",
        "pre-commit>=4.1.0, <5",
+       "pydantic-settings>=2.8.1",
        "pytest>=8.3.4, <9",             # Added by MA
     ]
 test = [
