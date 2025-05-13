@@ -14,7 +14,9 @@ class DataProcessor:
     This class handles data preprocessing, splitting, and saving to Databricks tables.
     """
 
-    def __init__(self, pandas_df: pd.DataFrame, config: ProjectConfig, spark: SparkSession) -> None:
+    def __init__(
+        self, pandas_df: pd.DataFrame, config: ProjectConfig, spark: SparkSession
+    ) -> None:
         self.df = pandas_df  # Store the DataFrame as self.df
         self.config = config  # Store the configuration
         self.spark = spark
@@ -38,29 +40,39 @@ class DataProcessor:
 
         # convert timestamp features to appropriate type:
         dt_format = "%Y-%m-%d %H:%M:%S"
-        self.df["actual_delivery_time"] = pd.to_datetime(self.df["actual_delivery_time"], format=dt_format)
+        self.df["actual_delivery_time"] = pd.to_datetime(
+            self.df["actual_delivery_time"], format=dt_format
+        )
         self.df["created_at"] = pd.to_datetime(self.df["created_at"], format=dt_format)
-        self.df["actual_delivery_time"].drop(inplace=True)
+
         # Extract target and relevant features
         target = self.config.target
-        self.df[target] = (self.df["actual_delivery_time"] - self.df["created_at"]).dt.total_seconds()
-
+        self.df[target] = (
+            self.df["actual_delivery_time"] - self.df["created_at"]
+        ).dt.total_seconds()
+        self.df.drop(columns=["actual_delivery_time"], inplace=True)
         # No id in original df, use index as id
         self.df = self.df.reset_index()
         self.df = self.df.rename(columns={"index": "id"})
         time_features = self.config.time_features
-        relevant_columns = cat_features + num_features + time_features + [target] + ["id"]
+        relevant_columns = (
+            cat_features + num_features + time_features + [target] + ["id"]
+        )
         self.df = self.df[relevant_columns]
         self.df["id"] = self.df["id"].astype("str")
 
-    def split_data(self, test_size: float = 0.2, random_state: int = 42) -> tuple[pd.DataFrame, pd.DataFrame]:
+    def split_data(
+        self, test_size: float = 0.2, random_state: int = 42
+    ) -> tuple[pd.DataFrame, pd.DataFrame]:
         """Split the DataFrame (self.df) into training and test sets.
 
         :param test_size: The proportion of the dataset to include in the test split.
         :param random_state: Controls the shuffling applied to the data before applying the split.
         :return: A tuple containing the training and test DataFrames.
         """
-        train_set, test_set = train_test_split(self.df, test_size=test_size, random_state=random_state)
+        train_set, test_set = train_test_split(
+            self.df, test_size=test_size, random_state=random_state
+        )
         return train_set, test_set
 
     def save_to_catalog(self, train_set: pd.DataFrame, test_set: pd.DataFrame) -> None:
