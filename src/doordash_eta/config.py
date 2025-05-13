@@ -15,10 +15,10 @@ class ProjectConfig(BaseModel):
 
     num_features: list[str]
     cat_features: list[str]
+    time_features: list[str]
     target: str
     catalog_name: str
     schema_name: str
-    parameters: dict[str, Any]
 
     @classmethod
     def from_yaml(cls, config_path: str, env: str = "dev") -> "ProjectConfig":
