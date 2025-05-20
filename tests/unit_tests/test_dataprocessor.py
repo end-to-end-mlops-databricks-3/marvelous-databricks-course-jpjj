@@ -2,7 +2,6 @@
 
 import pandas as pd
 import pytest
-from conftest import CATALOG_DIR
 from delta.tables import DeltaTable
 from pyspark.sql import SparkSession
 
@@ -116,8 +115,8 @@ def test_split_data_default_params(
 
     # # The following lines are just to mimick the behavior of delta tables in UC
     # # Just one time execution in order for all other tests to work
-    train.to_csv((CATALOG_DIR / "train_set.csv").as_posix(), index=False)  # noqa
-    test.to_csv((CATALOG_DIR / "test_set.csv").as_posix(), index=False)  # noqa
+    # train.to_csv((CATALOG_DIR / "train_set.csv").as_posix(), index=False)  # noqa
+    # test.to_csv((CATALOG_DIR / "test_set.csv").as_posix(), index=False)  # noqa
 
 
 def test_preprocess_empty_dataframe(config: ProjectConfig, spark_session: SparkSession) -> None:

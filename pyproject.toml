@@ -2,24 +2,25 @@
 name = "doordash-eta"
 description = "MLOps with Databricks course"
 requires-python = ">=3.11, <3.12"
-dependencies = ["mlflow==2.17.0",
-                "cffi==1.17.1",
-                "cloudpickle==3.1.0",
-                "matplotlib==3.9.2",
-                "numpy==1.26.4",
-                "pandas==2.2.3",
-                "psutil==6.0.0",
-                "pyarrow==14.0.1",
-                "scikit-learn==1.5.2",
-                "lightgbm==4.5.0",
-                "scipy==1.14.1",
-                "databricks-feature-engineering==0.6",
-                "databricks-feature-lookup==1.2.0",
-                "databricks-sdk==0.32.0",
-                "pydantic==2.9.2",
-                "loguru==0.7.3",
-                "marvelous@git+https://github.com/end-to-end-mlops-databricks-3/marvelous@0.1.0",
-                ]
+dependencies = [
+    "mlflow==2.17.0",
+    "cffi==1.17.1",
+    "cloudpickle==3.1.0",
+    "matplotlib==3.9.2",
+    "numpy==1.26.4",
+    "pandas==2.2.3",
+    "psutil==6.0.0",
+    "pyarrow==14.0.1",
+    "scikit-learn==1.5.2",
+    "catboost==1.2.8",
+    "scipy==1.14.1",
+    "databricks-feature-engineering==0.6",
+    "databricks-feature-lookup==1.2.0",
+    "databricks-sdk==0.32.0",
+    "pydantic==2.9.2",
+    "loguru==0.7.3",
+    "python-dotenv>=1.1.0",
+]
 
 dynamic = ['version']
 
@@ -30,6 +31,7 @@ dev = ["databricks-connect==15.4.5",
        "pre-commit>=4.1.0, <5",
        "pydantic-settings>=2.8.1",
        "pytest>=8.3.4, <9",             # Added by MA
+       "marvelous@git+https://github.com/end-to-end-mlops-databricks-3/marvelous@0.1.0",
     ]
 test = [
     "pre-commit>=4.1.0, <5",
@@ -37,7 +39,8 @@ test = [
     "pyspark==3.5.5",
     "pytest>=8.3.5",
     "pytest-cov >=6.1.0",
-    "pydantic-settings>=2.8.1"
+    "pydantic-settings>=2.8.1",
+    "marvelous@git+https://github.com/end-to-end-mlops-databricks-3/marvelous@0.1.0",
 ]
 
 [build-system]

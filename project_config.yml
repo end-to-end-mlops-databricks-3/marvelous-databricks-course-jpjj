@@ -8,6 +8,10 @@ dev:
   catalog_name: mlops_dev
   schema_name: jenspete
 
+experiment_name_custom: /Shared/doordash-eta-custom
+
+parameters:
+  iterations: 1000
 
 num_features:
   - total_items

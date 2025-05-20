@@ -327,3 +327,49 @@ __pydantic_private__: null
 2025-05-13 22:34:16.622 | INFO     | __main__:<module>:4 - Test set shape: %s
 2025-05-13 22:34:16.775 | INFO     | __main__:<module>:2 - Saving data to catalog
 2025-05-13 22:41:06.895 | INFO     | __main__:<module>:6 - Enable change data feed
+2025-05-20 21:43:34.141 | INFO     | __main__:<module>:16 - Configuration loaded:
+2025-05-20 21:43:34.144 | INFO     | __main__:<module>:17 - !!python/object:doordash_eta.config.ProjectConfig
+__dict__:
+  cat_features:
+  - market_id
+  - store_id
+  - store_primary_category
+  - order_protocol
+  catalog_name: mlops_dev
+  experiment_name_basic: /Shared/doordash-eta-basic
+  experiment_name_custom: /Shared/doordash-eta-custom
+  num_features:
+  - total_items
+  - subtotal
+  - num_distinct_items
+  - min_item_price
+  - max_item_price
+  - total_onshift_dashers
+  - total_busy_dashers
+  - total_outstanding_orders
+  - estimated_order_place_duration
+  - estimated_store_to_consumer_driving_duration
+  parameters:
+    iterations: 1000
+  schema_name: jenspete
+  target: leadtime_in_s
+  time_features:
+  - created_at
+__pydantic_extra__: null
+__pydantic_fields_set__: !!set
+  cat_features: null
+  catalog_name: null
+  experiment_name_basic: null
+  experiment_name_custom: null
+  num_features: null
+  parameters: null
+  schema_name: null
+  target: null
+  time_features: null
+__pydantic_private__: null
+
+2025-05-20 21:43:35.263 | INFO     | __main__:<module>:9 - Data preprocessing: Elapsed time: 0.5000 seconds
+2025-05-20 21:43:35.350 | INFO     | __main__:<module>:3 - Training set shape: %s
+2025-05-20 21:43:35.351 | INFO     | __main__:<module>:4 - Test set shape: %s
+2025-05-20 21:43:35.379 | INFO     | __main__:<module>:2 - Saving data to catalog
+2025-05-20 21:44:39.476 | INFO     | __main__:<module>:6 - Enable change data feed
