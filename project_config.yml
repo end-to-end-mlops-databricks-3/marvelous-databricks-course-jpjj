@@ -12,9 +12,7 @@ experiment_name_basic: /Shared/doordash-eta-basic
 experiment_name_custom: /Shared/doordash-eta-custom
 
 parameters:
-  learning_rate: 0.01
-  n_estimators: 1000
-  max_depth: 6
+  iterations: 1000
 
 num_features:
   - total_items
