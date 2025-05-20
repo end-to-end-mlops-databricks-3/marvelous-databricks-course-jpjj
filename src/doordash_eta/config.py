@@ -1,5 +1,7 @@
 """Configuration file for the project."""
 
+from typing import Any
+
 import yaml
 from pydantic import BaseModel
 
@@ -17,6 +19,9 @@ class ProjectConfig(BaseModel):
     target: str
     catalog_name: str
     schema_name: str
+    paremeters: dict[str, Any]
+    experiment_name_basic: str | None
+    experiment_name_custom: str | None
 
     @classmethod
     def from_yaml(cls, config_path: str, env: str = "dev") -> "ProjectConfig":
@@ -45,4 +50,3 @@ class Tags(BaseModel):
 
     git_sha: str
     branch: str
-    job_run_id: str
