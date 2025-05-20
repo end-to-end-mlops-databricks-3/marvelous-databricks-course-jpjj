@@ -40,7 +40,9 @@ def test_dataprocessor_init(
     assert isinstance(processor.spark, SparkSession)
 
 
-def test_column_transformations(sample_data: pd.DataFrame, config: ProjectConfig, spark_session: SparkSession) -> None:
+def test_column_transformations(
+    sample_data: pd.DataFrame, config: ProjectConfig, spark_session: SparkSession
+) -> None:
     """Test column transformations performed by the DataProcessor.
 
     This function checks if specific column transformations are applied correctly,
@@ -58,7 +60,9 @@ def test_column_transformations(sample_data: pd.DataFrame, config: ProjectConfig
     assert processor.df["market_id"].dtype == "category"
 
 
-def test_missing_value_handling(sample_data: pd.DataFrame, config: ProjectConfig, spark_session: SparkSession) -> None:
+def test_missing_value_handling(
+    sample_data: pd.DataFrame, config: ProjectConfig, spark_session: SparkSession
+) -> None:
     """Test missing value handling in the DataProcessor.
 
     This function verifies that missing values are handled correctly for
@@ -76,7 +80,9 @@ def test_missing_value_handling(sample_data: pd.DataFrame, config: ProjectConfig
     assert (processor.df["total_outstanding_orders"] == 0).sum() > 0
 
 
-def test_column_selection(sample_data: pd.DataFrame, config: ProjectConfig, spark_session: SparkSession) -> None:
+def test_column_selection(
+    sample_data: pd.DataFrame, config: ProjectConfig, spark_session: SparkSession
+) -> None:
     """Test column selection in the DataProcessor.
 
     This function checks if the correct columns are selected and present in the
@@ -89,7 +95,12 @@ def test_column_selection(sample_data: pd.DataFrame, config: ProjectConfig, spar
     processor = DataProcessor(pandas_df=sample_data, config=config, spark=spark_session)
     processor.preprocess()
 
-    expected_columns = config.cat_features + config.num_features + config.time_features + [config.target, "id"]
+    expected_columns = (
+        config.cat_features
+        + config.num_features
+        + config.time_features
+        + [config.target, "id"]
+    )
     assert set(processor.df.columns) == set(expected_columns)
 
 
@@ -116,11 +127,13 @@ def test_split_data_default_params(
 
     # # The following lines are just to mimick the behavior of delta tables in UC
     # # Just one time execution in order for all other tests to work
-    train.to_csv((CATALOG_DIR / "train_set.csv").as_posix(), index=False)  # noqa
-    test.to_csv((CATALOG_DIR / "test_set.csv").as_posix(), index=False)  # noqa
+    # train.to_csv((CATALOG_DIR / "train_set.csv").as_posix(), index=False)  # noqa
+    # test.to_csv((CATALOG_DIR / "test_set.csv").as_posix(), index=False)  # noqa
 
 
-def test_preprocess_empty_dataframe(config: ProjectConfig, spark_session: SparkSession) -> None:
+def test_preprocess_empty_dataframe(
+    config: ProjectConfig, spark_session: SparkSession
+) -> None:
     """Test the preprocess method with an empty DataFrame.
 
     This function tests if the preprocess method correctly handles an empty DataFrame
@@ -130,7 +143,9 @@ def test_preprocess_empty_dataframe(config: ProjectConfig, spark_session: SparkS
     :param spark: SparkSession object
     :raises KeyError: If the preprocess method handles empty DataFrame correctly
     """
-    processor = DataProcessor(pandas_df=pd.DataFrame([]), config=config, spark=spark_session)
+    processor = DataProcessor(
+        pandas_df=pd.DataFrame([]), config=config, spark=spark_session
+    )
     with pytest.raises(KeyError):
         processor.preprocess()
 
@@ -155,13 +170,19 @@ def test_save_to_catalog_successful(
     processor.enable_change_data_feed()
 
     # Assert
-    assert spark_session.catalog.tableExists(f"{config.catalog_name}.{config.schema_name}.train_set")
-    assert spark_session.catalog.tableExists(f"{config.catalog_name}.{config.schema_name}.test_set")
+    assert spark_session.catalog.tableExists(
+        f"{config.catalog_name}.{config.schema_name}.train_set"
+    )
+    assert spark_session.catalog.tableExists(
+        f"{config.catalog_name}.{config.schema_name}.test_set"
+    )
 
 
 @pytest.mark.skip(reason="depends on delta tables on Databrics")
 @pytest.mark.order(after=test_save_to_catalog_successful)
-def test_delta_table_property_of_enableChangeDataFeed_check(config: ProjectConfig, spark_session: SparkSession) -> None:
+def test_delta_table_property_of_enableChangeDataFeed_check(
+    config: ProjectConfig, spark_session: SparkSession
+) -> None:
     """Check if Change Data Feed is enabled for train and test sets.
 
     Verifies that the 'delta.enableChangeDataFeed' property is set to True for both
