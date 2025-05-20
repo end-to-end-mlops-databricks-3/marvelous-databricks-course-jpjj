@@ -18,7 +18,7 @@ dependencies = ["mlflow==2.17.0",
                 "databricks-sdk==0.32.0",
                 "pydantic==2.9.2",
                 "loguru==0.7.3",
-                "marvelous@git+https://github.com/end-to-end-mlops-databricks-3/marvelous@0.1.0",
+                "python-dotenv>=1.1.0",
                 ]
 
 dynamic = ['version']
@@ -30,6 +30,7 @@ dev = ["databricks-connect==15.4.5",
        "pre-commit>=4.1.0, <5",
        "pydantic-settings>=2.8.1",
        "pytest>=8.3.4, <9",             # Added by MA
+       "marvelous@git+https://github.com/end-to-end-mlops-databricks-3/marvelous@0.1.0",
     ]
 test = [
     "pre-commit>=4.1.0, <5",
@@ -37,7 +38,8 @@ test = [
     "pyspark==3.5.5",
     "pytest>=8.3.5",
     "pytest-cov >=6.1.0",
-    "pydantic-settings>=2.8.1"
+    "pydantic-settings>=2.8.1",
+    "marvelous@git+https://github.com/end-to-end-mlops-databricks-3/marvelous@0.1.0",
 ]
 
 [build-system]
