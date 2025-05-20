@@ -13,16 +13,16 @@ import mlflow
 import numpy as np
 import pandas as pd
 from catboost import CatBoostRegressor
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import FunctionTransformer
 from loguru import logger
 from mlflow import MlflowClient
 from mlflow.data.dataset_source import DatasetSource
 from mlflow.models import infer_signature
 from mlflow.utils.environment import _mlflow_conda_env
 from pyspark.sql import SparkSession
-from sklearn.compose import ColumnTransformer
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder
 
 from doordash_eta.config import ProjectConfig, Tags
 from doordash_eta.utils import adjust_predictions
@@ -116,11 +116,32 @@ class CustomModel:
         This method sets up a preprocessing pipeline which is only the catboost regression model.
         No one-hot-encoding needed. Go CatBoost!
         """
-        logger.info("🔄 Defining preprocessing pipeline...")
 
+        # Define a function to convert categorical features to strings
+        def to_string(X):
+            return X.astype(str)
+
+        # Create a transformer that applies the to_string function
+        string_transformer = FunctionTransformer(to_string)
+
+        # Use the transformer in your ColumnTransformer
+        logger.info("🔄 Defining preprocessing pipeline...")
+        self.preprocessor = ColumnTransformer(
+            transformers=[("cat", string_transformer, self.cat_features)],
+            remainder="passthrough",
+            verbose_feature_names_out=False,
+        )
+        self.preprocessor.set_output(transform="pandas")
+        catboost_regressor = CatBoostRegressor(
+            **self.parameters, cat_features=self.cat_features
+        )
         self.pipeline = Pipeline(
             steps=[
-                ("regressor", CatBoostRegressor(**self.parameters)),
+                ("preprocessor", self.preprocessor),
+                (
+                    "regressor",
+                    catboost_regressor,
+                ),
             ]
         )
         logger.info("✅ Preprocessing pipeline defined.")
@@ -128,7 +149,10 @@ class CustomModel:
     def train(self) -> None:
         """Train the model using the prepared pipeline."""
         logger.info("🚀 Starting training...")
-        self.pipeline.fit(self.X_train, self.y_train)
+        self.pipeline.fit(
+            self.X_train,
+            self.y_train,
+        )
 
     def log_model(
         self, dataset_type: Literal["PandasDataset", "SparkDataset"] = "SparkDataset"
@@ -210,7 +234,7 @@ class CustomModel:
 
         client = MlflowClient()
         client.set_registered_model_alias(
-            name=f"{self.catalog_name}.{self.schema_name}.house_prices_model_custom",
+            name=f"{self.catalog_name}.{self.schema_name}.doordash_eta_model_custom",
             alias="latest-model",
             version=latest_version,
         )
@@ -240,15 +264,17 @@ class CustomModel:
         Alias latest is not allowed -> we use latest-model instead as an alternative.
         :param input_data: Input data for prediction.
         :return: Predictions.
+
         Note:
         This also works
         model.unwrap_python_model().predict(None, input_data)
         check out this article:
         https://medium.com/towards-data-science/algorithm-agnostic-model-building-with-mlflow-b106a5a29535
+
         """
         logger.info("🔄 Loading model from MLflow alias 'production'...")
 
-        model_uri = f"models:/{self.catalog_name}.{self.schema_name}.house_prices_model_custom@latest-model"
+        model_uri = f"models:/{self.catalog_name}.{self.schema_name}.doordash_eta_model_custom@latest-model"
         model = mlflow.pyfunc.load_model(model_uri)
 
         logger.info("✅ Model successfully loaded.")
