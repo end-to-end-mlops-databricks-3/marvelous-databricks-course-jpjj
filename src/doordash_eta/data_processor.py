@@ -44,6 +44,7 @@ class DataProcessor:
         # Extract target and relevant features
         target = self.config.target
         self.df[target] = (self.df["actual_delivery_time"] - self.df["created_at"]).dt.total_seconds()
+        self.df = self.df.dropna(subset=[target])
         self.df.drop(columns=["actual_delivery_time"], inplace=True)
         # No id in original df, use index as id
         self.df = self.df.reset_index()

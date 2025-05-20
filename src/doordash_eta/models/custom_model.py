@@ -1,4 +1,5 @@
 """Custom model implementation.
+
 infer_signature (from mlflow.models) → Captures input-output schema for model tracking.
 num_features → List of numerical feature names.
 cat_features → List of categorical feature names.
@@ -13,16 +14,16 @@ import mlflow
 import numpy as np
 import pandas as pd
 from catboost import CatBoostRegressor
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import FunctionTransformer
 from loguru import logger
 from mlflow import MlflowClient
 from mlflow.data.dataset_source import DatasetSource
 from mlflow.models import infer_signature
 from mlflow.utils.environment import _mlflow_conda_env
 from pyspark.sql import SparkSession
+from sklearn.compose import ColumnTransformer
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import FunctionTransformer
 
 from doordash_eta.config import ProjectConfig, Tags
 from doordash_eta.utils import adjust_predictions
@@ -30,11 +31,13 @@ from doordash_eta.utils import adjust_predictions
 
 class HousePriceModelWrapper(mlflow.pyfunc.PythonModel):
     """Wrapper class for machine learning models to be used with MLflow.
+
     This class wraps a machine learning model for predicting house prices.
     """
 
     def __init__(self, model: object) -> None:
         """Initialize the HousePriceModelWrapper.
+
         :param model: The underlying machine learning model.
         """
         self.model = model
@@ -45,6 +48,7 @@ class HousePriceModelWrapper(mlflow.pyfunc.PythonModel):
         model_input: pd.DataFrame | np.ndarray,
     ) -> dict[str, float]:
         """Make predictions using the wrapped model.
+
         :param context: The MLflow context (unused in this implementation).
         :param model_input: Input data for making predictions.
         :return: A dictionary containing the adjusted prediction.
@@ -60,6 +64,7 @@ class HousePriceModelWrapper(mlflow.pyfunc.PythonModel):
 
 class CustomModel:
     """Custom model class for doordash eta prediction.
+
     This class encapsulates the entire workflow of loading data, preparing features,
     training the model, and making predictions.
     """
@@ -72,6 +77,7 @@ class CustomModel:
         code_paths: list[str],
     ) -> None:
         """Initialize the CustomModel.
+
         :param config: Configuration object containing model settings.
         :param tags: Tags for MLflow logging.
         :param spark: SparkSession object.
@@ -93,16 +99,13 @@ class CustomModel:
 
     def load_data(self) -> None:
         """Load training and testing data from Delta tables.
+
         This method loads data from Databricks tables and splits it into features and target variables.
         """
         logger.info("🔄 Loading data from Databricks tables...")
-        self.train_set_spark = self.spark.table(
-            f"{self.catalog_name}.{self.schema_name}.train_set"
-        )
+        self.train_set_spark = self.spark.table(f"{self.catalog_name}.{self.schema_name}.train_set")
         self.train_set = self.train_set_spark.toPandas()
-        self.test_set = self.spark.table(
-            f"{self.catalog_name}.{self.schema_name}.test_set"
-        ).toPandas()
+        self.test_set = self.spark.table(f"{self.catalog_name}.{self.schema_name}.test_set").toPandas()
         self.data_version = "0"  # describe history -> retrieve
 
         self.X_train = self.train_set[self.num_features + self.cat_features]
@@ -113,13 +116,15 @@ class CustomModel:
 
     def prepare_features(self) -> None:
         """Prepare features for model training.
+
         This method sets up a preprocessing pipeline which is only the catboost regression model.
         No one-hot-encoding needed. Go CatBoost!
         """
 
         # Define a function to convert categorical features to strings
-        def to_string(X):
-            return X.astype(str)
+        def to_string(x: float) -> str:
+            """Doc string."""
+            return x.astype(str)
 
         # Create a transformer that applies the to_string function
         string_transformer = FunctionTransformer(to_string)
@@ -132,9 +137,7 @@ class CustomModel:
             verbose_feature_names_out=False,
         )
         self.preprocessor.set_output(transform="pandas")
-        catboost_regressor = CatBoostRegressor(
-            **self.parameters, cat_features=self.cat_features
-        )
+        catboost_regressor = CatBoostRegressor(**self.parameters, cat_features=self.cat_features)
         self.pipeline = Pipeline(
             steps=[
                 ("preprocessor", self.preprocessor),
@@ -154,10 +157,9 @@ class CustomModel:
             self.y_train,
         )
 
-    def log_model(
-        self, dataset_type: Literal["PandasDataset", "SparkDataset"] = "SparkDataset"
-    ) -> None:
+    def log_model(self, dataset_type: Literal["PandasDataset", "SparkDataset"] = "SparkDataset") -> None:
         """Log the trained model and its metrics to MLflow.
+
         This method evaluates the model, logs parameters and metrics, and saves the model in MLflow.
         """
         mlflow.set_experiment(self.experiment_name)
@@ -220,6 +222,7 @@ class CustomModel:
 
     def register_model(self) -> None:
         """Register the trained model in MLflow Model Registry.
+
         This method registers the model and sets an alias for the latest version.
         """
         logger.info("🔄 Registering the model in UC...")
@@ -241,6 +244,7 @@ class CustomModel:
 
     def retrieve_current_run_dataset(self) -> DatasetSource:
         """Retrieve the dataset used in the current MLflow run.
+
         :return: The loaded dataset source.
         """
         run = mlflow.get_run(self.run_id)
@@ -251,6 +255,7 @@ class CustomModel:
 
     def retrieve_current_run_metadata(self) -> tuple[dict, dict]:
         """Retrieve metadata from the current MLflow run.
+
         :return: A tuple containing metrics and parameters of the current run.
         """
         run = mlflow.get_run(self.run_id)
@@ -261,6 +266,7 @@ class CustomModel:
 
     def load_latest_model_and_predict(self, input_data: pd.DataFrame) -> np.ndarray:
         """Load the latest model (alias=latest-model) from MLflow and make predictions.
+
         Alias latest is not allowed -> we use latest-model instead as an alternative.
         :param input_data: Input data for prediction.
         :return: Predictions.
