@@ -515,7 +515,6 @@ dependencies = [
     { name = "databricks-sdk" },
     { name = "lightgbm" },
     { name = "loguru" },
-    { name = "marvelous" },
     { name = "matplotlib" },
     { name = "mlflow" },
     { name = "numpy" },
@@ -523,6 +522,7 @@ dependencies = [
     { name = "psutil" },
     { name = "pyarrow" },
     { name = "pydantic" },
+    { name = "python-dotenv" },
     { name = "scikit-learn" },
     { name = "scipy" },
 ]
@@ -531,6 +531,7 @@ dependencies = [
 dev = [
     { name = "databricks-connect" },
     { name = "ipykernel" },
+    { name = "marvelous" },
     { name = "pip" },
     { name = "pre-commit" },
     { name = "pydantic-settings" },
@@ -538,6 +539,7 @@ dev = [
 ]
 test = [
     { name = "delta-spark" },
+    { name = "marvelous" },
     { name = "pre-commit" },
     { name = "pydantic-settings" },
     { name = "pyspark" },
@@ -557,7 +559,8 @@ requires-dist = [
     { name = "ipykernel", marker = "extra == 'dev'", specifier = ">=6.29.5,<7" },
     { name = "lightgbm", specifier = "==4.5.0" },
     { name = "loguru", specifier = "==0.7.3" },
-    { name = "marvelous", git = "https://github.com/end-to-end-mlops-databricks-3/marvelous?rev=0.1.0" },
+    { name = "marvelous", marker = "extra == 'dev'", git = "https://github.com/end-to-end-mlops-databricks-3/marvelous?rev=0.1.0" },
+    { name = "marvelous", marker = "extra == 'test'", git = "https://github.com/end-to-end-mlops-databricks-3/marvelous?rev=0.1.0" },
     { name = "matplotlib", specifier = "==3.9.2" },
     { name = "mlflow", specifier = "==2.17.0" },
     { name = "numpy", specifier = "==1.26.4" },
@@ -574,6 +577,7 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3.4,<9" },
     { name = "pytest", marker = "extra == 'test'", specifier = ">=8.3.5" },
     { name = "pytest-cov", marker = "extra == 'test'", specifier = ">=6.1.0" },
+    { name = "python-dotenv", specifier = ">=1.1.0" },
     { name = "scikit-learn", specifier = "==1.5.2" },
     { name = "scipy", specifier = "==1.14.1" },
 ]
