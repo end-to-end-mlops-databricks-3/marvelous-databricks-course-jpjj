@@ -2,8 +2,8 @@
 
 import mlflow
 import pandas as pd
-from conftest import CATALOG_DIR, TRACKING_URI
 from catboost import CatBoostRegressor
+from conftest import CATALOG_DIR, TRACKING_URI
 from loguru import logger
 from mlflow.entities.model_registry.registered_model import RegisteredModel
 from mlflow.tracking import MlflowClient
@@ -17,10 +17,9 @@ from doordash_eta.models.custom_model import CustomModel
 mlflow.set_tracking_uri(TRACKING_URI)
 
 
-def test_custom_model_init(
-    config: ProjectConfig, tags: Tags, spark_session: SparkSession
-) -> None:
+def test_custom_model_init(config: ProjectConfig, tags: Tags, spark_session: SparkSession) -> None:
     """Test the initialization of CustomModel.
+
     This function creates a CustomModel instance and asserts that its attributes are of the correct types.
     :param config: Configuration for the project
     :param tags: Tags associated with the model
@@ -37,6 +36,7 @@ def test_custom_model_init(
 
 def test_load_data_validate_df_assignment(mock_custom_model: CustomModel) -> None:
     """Validate correct assignment of train and test DataFrames from CSV files.
+
     :param mock_custom_model: Mocked CustomModel instance for testing.
     """
     train_data = pd.read_csv((CATALOG_DIR / "train_set.csv").as_posix())
@@ -52,6 +52,7 @@ def test_load_data_validate_df_assignment(mock_custom_model: CustomModel) -> Non
 
 def test_load_data_validate_splits(mock_custom_model: CustomModel) -> None:
     """Verify correct feature/target splits in training and test data.
+
     :param mock_custom_model: Mocked CustomModel instance for testing.
     """
     train_data = pd.read_csv((CATALOG_DIR / "train_set.csv").as_posix())
@@ -62,22 +63,15 @@ def test_load_data_validate_splits(mock_custom_model: CustomModel) -> None:
 
     # Verify feature/target splits
     expected_features = mock_custom_model.num_features + mock_custom_model.cat_features
-    pd.testing.assert_frame_equal(
-        mock_custom_model.X_train, train_data[expected_features]
-    )
-    pd.testing.assert_series_equal(
-        mock_custom_model.y_train, train_data[mock_custom_model.target]
-    )
-    pd.testing.assert_frame_equal(
-        mock_custom_model.X_test, test_data[expected_features]
-    )
-    pd.testing.assert_series_equal(
-        mock_custom_model.y_test, test_data[mock_custom_model.target]
-    )
+    pd.testing.assert_frame_equal(mock_custom_model.X_train, train_data[expected_features])
+    pd.testing.assert_series_equal(mock_custom_model.y_train, train_data[mock_custom_model.target])
+    pd.testing.assert_frame_equal(mock_custom_model.X_test, test_data[expected_features])
+    pd.testing.assert_series_equal(mock_custom_model.y_test, test_data[mock_custom_model.target])
 
 
 def test_prepare_features(mock_custom_model: CustomModel) -> None:
     """Test that prepare_features method initializes pipeline components correctly.
+
     Verifies the preprocessor is a ColumnTransformer and pipeline contains expected
     ColumnTransformer and CatBoostRegressor steps in sequence.
     :param mock_custom_model: Mocked CustomModel instance for testing
@@ -93,6 +87,7 @@ def test_prepare_features(mock_custom_model: CustomModel) -> None:
 
 def test_train(mock_custom_model: CustomModel) -> None:
     """Test that train method configures pipeline with correct feature handling.
+
     Validates feature count matches configuration and feature names align with
     numerical/categorical features defined in model config.
     :param mock_custom_model: Mocked CustomModel instance for testing
@@ -100,18 +95,15 @@ def test_train(mock_custom_model: CustomModel) -> None:
     mock_custom_model.load_data()
     mock_custom_model.prepare_features()
     mock_custom_model.train()
-    expected_feature_names = (
-        mock_custom_model.config.num_features + mock_custom_model.config.cat_features
-    )
+    expected_feature_names = mock_custom_model.config.num_features + mock_custom_model.config.cat_features
 
     assert mock_custom_model.pipeline.n_features_in_ == len(expected_feature_names)
-    assert sorted(expected_feature_names) == sorted(
-        mock_custom_model.pipeline.feature_names_in_
-    )
+    assert sorted(expected_feature_names) == sorted(mock_custom_model.pipeline.feature_names_in_)
 
 
 def test_log_model_with_PandasDataset(mock_custom_model: CustomModel) -> None:
     """Test model logging with PandasDataset validation.
+
     Verifies that the model's pipeline captures correct feature dimensions and names,
     then checks proper dataset type handling during model logging.
     :param mock_custom_model: Mocked CustomModel instance for testing
@@ -120,26 +112,16 @@ def test_log_model_with_PandasDataset(mock_custom_model: CustomModel) -> None:
     mock_custom_model.prepare_features()
 
     logger.info("Fitting preprocessor for debugging...")
-    mock_custom_model.preprocessor.fit(
-        mock_custom_model.X_train
-    )  # Make sure to fit with your training data
+    mock_custom_model.preprocessor.fit(mock_custom_model.X_train)  # Make sure to fit with your training data
     logger.info("Transforming data with preprocessor for debugging...")
-    X_processed_debug_df = mock_custom_model.preprocessor.transform(
-        mock_custom_model.X_train
-    )
-    logger.info(
-        f"Columns in DataFrame AFTER preprocessing: {X_processed_debug_df.columns.tolist()}"
-    )
+    X_processed_debug_df = mock_custom_model.preprocessor.transform(mock_custom_model.X_train)
+    logger.info(f"Columns in DataFrame AFTER preprocessing: {X_processed_debug_df.columns.tolist()}")
 
     mock_custom_model.train()
-    expected_feature_names = (
-        mock_custom_model.config.num_features + mock_custom_model.config.cat_features
-    )
+    expected_feature_names = mock_custom_model.config.num_features + mock_custom_model.config.cat_features
 
     assert mock_custom_model.pipeline.n_features_in_ == len(expected_feature_names)
-    assert sorted(expected_feature_names) == sorted(
-        mock_custom_model.pipeline.feature_names_in_
-    )
+    assert sorted(expected_feature_names) == sorted(mock_custom_model.pipeline.feature_names_in_)
 
     mock_custom_model.log_model(dataset_type="PandasDataset")
 
@@ -151,9 +133,7 @@ def test_log_model_with_PandasDataset(mock_custom_model: CustomModel) -> None:
     experiment_id = experiment.experiment_id
     assert experiment_id
 
-    runs = client.search_runs(
-        experiment_id, order_by=["start_time desc"], max_results=1
-    )
+    runs = client.search_runs(experiment_id, order_by=["start_time desc"], max_results=1)
     assert len(runs) == 1
     latest_run = runs[0]
 
@@ -165,6 +145,7 @@ def test_log_model_with_PandasDataset(mock_custom_model: CustomModel) -> None:
 
 def test_register_model(mock_custom_model: CustomModel) -> None:
     """Test the registration of a custom MLflow model.
+
     This function performs several operations on the mock custom model, including loading data,
     preparing features, training, and logging the model. It then registers the model and verifies
     its existence in the MLflow model registry.
@@ -198,6 +179,7 @@ def test_register_model(mock_custom_model: CustomModel) -> None:
 
 def test_retrieve_current_run_metadata(mock_custom_model: CustomModel) -> None:
     """Test retrieving the current run metadata from a mock custom model.
+
     This function verifies that the `retrieve_current_run_metadata` method
     of the `CustomModel` class returns metrics and parameters as dictionaries.
     :param mock_custom_model: A mocked instance of the CustomModel class.
@@ -216,6 +198,7 @@ def test_retrieve_current_run_metadata(mock_custom_model: CustomModel) -> None:
 
 def test_load_latest_model_and_predict(mock_custom_model: CustomModel) -> None:
     """Test the process of loading the latest model and making predictions.
+
     This function performs the following steps:
     - Loads data using the provided custom model.
     - Prepares features and trains the model.
@@ -230,9 +213,7 @@ def test_load_latest_model_and_predict(mock_custom_model: CustomModel) -> None:
     mock_custom_model.log_model(dataset_type="PandasDataset")
     mock_custom_model.register_model()
 
-    input_data = mock_custom_model.test_set.drop(
-        columns=[mock_custom_model.config.target]
-    )
+    input_data = mock_custom_model.test_set.drop(columns=[mock_custom_model.config.target])
     input_data = input_data.where(input_data.notna(), None)  # noqa
 
     for row in input_data.itertuples(index=False):

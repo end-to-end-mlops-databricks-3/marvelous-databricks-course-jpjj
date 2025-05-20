@@ -8,7 +8,6 @@ dev:
   catalog_name: mlops_dev
   schema_name: jenspete
 
-experiment_name_basic: /Shared/doordash-eta-basic
 experiment_name_custom: /Shared/doordash-eta-custom
 
 parameters:
