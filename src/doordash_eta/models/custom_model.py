@@ -103,13 +103,9 @@ class CustomModel:
         This method loads data from Databricks tables and splits it into features and target variables.
         """
         logger.info("🔄 Loading data from Databricks tables...")
-        self.train_set_spark = self.spark.table(
-            f"{self.catalog_name}.{self.schema_name}.train_set"
-        )
+        self.train_set_spark = self.spark.table(f"{self.catalog_name}.{self.schema_name}.train_set")
         self.train_set = self.train_set_spark.toPandas()
-        self.test_set = self.spark.table(
-            f"{self.catalog_name}.{self.schema_name}.test_set"
-        ).toPandas()
+        self.test_set = self.spark.table(f"{self.catalog_name}.{self.schema_name}.test_set").toPandas()
         self.data_version = "0"  # describe history -> retrieve
 
         self.X_train = self.train_set[self.num_features + self.cat_features]
@@ -141,9 +137,7 @@ class CustomModel:
             verbose_feature_names_out=False,
         )
         self.preprocessor.set_output(transform="pandas")
-        catboost_regressor = CatBoostRegressor(
-            **self.parameters, cat_features=self.cat_features
-        )
+        catboost_regressor = CatBoostRegressor(**self.parameters, cat_features=self.cat_features)
         self.pipeline = Pipeline(
             steps=[
                 ("preprocessor", self.preprocessor),
@@ -163,9 +157,7 @@ class CustomModel:
             self.y_train,
         )
 
-    def log_model(
-        self, dataset_type: Literal["PandasDataset", "SparkDataset"] = "SparkDataset"
-    ) -> None:
+    def log_model(self, dataset_type: Literal["PandasDataset", "SparkDataset"] = "SparkDataset") -> None:
         """Log the trained model and its metrics to MLflow.
 
         This method evaluates the model, logs parameters and metrics, and saves the model in MLflow.
