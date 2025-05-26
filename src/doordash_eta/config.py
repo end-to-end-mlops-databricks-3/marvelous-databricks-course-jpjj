@@ -21,6 +21,7 @@ class ProjectConfig(BaseModel):
     schema_name: str
     parameters: dict[str, Any]
     experiment_name_custom: str | None
+    experiment_name_fe: str | None
 
     @classmethod
     def from_yaml(cls, config_path: str, env: str = "dev") -> "ProjectConfig":
@@ -31,7 +32,9 @@ class ProjectConfig(BaseModel):
         :return: ProjectConfig instance initialized with parsed configuration
         """
         if env not in ["prd", "acc", "dev"]:
-            raise ValueError(f"Invalid environment: {env}. Expected 'prd', 'acc', or 'dev'")
+            raise ValueError(
+                f"Invalid environment: {env}. Expected 'prd', 'acc', or 'dev'"
+            )
 
         with open(config_path) as f:
             config_dict = yaml.safe_load(f)
