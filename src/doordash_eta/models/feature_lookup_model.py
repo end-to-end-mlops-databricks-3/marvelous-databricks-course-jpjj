@@ -36,7 +36,7 @@ class FeatureLookUpModel:
         self.schema_name = self.config.schema_name
 
         # Define table names and function name
-        self.feature_table_name = f"{self.catalog_name}.{self.schema_name}.doordash-eta-features"
+        self.feature_table_name = f"{self.catalog_name}.{self.schema_name}.doordash_eta_features"
         self.function_name = f"{self.catalog_name}.{self.schema_name}.calculate_dashers_per_order"
 
         # MLflow configuration
@@ -44,7 +44,7 @@ class FeatureLookUpModel:
         self.tags = tags.dict()
 
     def create_feature_table(self) -> None:
-        """Create or update the doordash-eta-features table and populate it.
+        """Create or update the doordash_eta_features table and populate it.
 
         This table stores features related to houses.
         """
