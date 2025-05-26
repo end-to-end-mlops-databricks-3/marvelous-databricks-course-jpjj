@@ -49,7 +49,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where =["src"]
-include = ["mlops_course*"]
+include = ["doordash_eta*"]
 
 [tool.setuptools.dynamic]
 version = { file = "version.txt" }
