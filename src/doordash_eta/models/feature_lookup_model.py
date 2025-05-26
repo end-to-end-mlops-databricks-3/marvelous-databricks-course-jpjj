@@ -36,8 +36,12 @@ class FeatureLookUpModel:
         self.schema_name = self.config.schema_name
 
         # Define table names and function name
-        self.feature_table_name = f"{self.catalog_name}.{self.schema_name}.doordash_eta_features"
-        self.function_name = f"{self.catalog_name}.{self.schema_name}.calculate_dashers_per_order"
+        self.feature_table_name = (
+            f"{self.catalog_name}.{self.schema_name}.doordash_eta_features"
+        )
+        self.function_name = (
+            f"{self.catalog_name}.{self.schema_name}.calculate_dashers_per_order"
+        )
 
         # MLflow configuration
         self.experiment_name = self.config.experiment_name_fe
@@ -51,11 +55,15 @@ class FeatureLookUpModel:
         self.spark.sql(
             f"""
         CREATE OR REPLACE TABLE {self.feature_table_name}
-        (id STRING NOT NULL, total_items INT, subtotal INT, num_distinct_items INT);
+        (id STRING NOT NULL, total_items DOUBLE, subtotal DOUBLE, num_distinct_items DOUBLE);
         """
         )
-        self.spark.sql(f"ALTER TABLE {self.feature_table_name} ADD CONSTRAINT order_pk PRIMARY KEY(id);")
-        self.spark.sql(f"ALTER TABLE {self.feature_table_name} SET TBLPROPERTIES (delta.enableChangeDataFeed = true);")
+        self.spark.sql(
+            f"ALTER TABLE {self.feature_table_name} ADD CONSTRAINT order_pk PRIMARY KEY(id);"
+        )
+        self.spark.sql(
+            f"ALTER TABLE {self.feature_table_name} SET TBLPROPERTIES (delta.enableChangeDataFeed = true);"
+        )
 
         self.spark.sql(
             f"INSERT INTO {self.feature_table_name} SELECT id, total_items, subtotal, num_distinct_items FROM {self.catalog_name}.{self.schema_name}.train_set"
@@ -72,8 +80,8 @@ class FeatureLookUpModel:
         """
         self.spark.sql(
             f"""
-        CREATE OR REPLACE FUNCTION {self.function_name}(total_onshift_dashers INT, total_outstanding_orders INT)
-        RETURNS INT
+        CREATE OR REPLACE FUNCTION {self.function_name}(total_onshift_dashers DOUBLE, total_outstanding_orders DOUBLE)
+        RETURNS DOUBLE
         LANGUAGE PYTHON AS
         $$
         return total_onshift_dashers / (total_outstanding_orders + 1e-5)
@@ -84,12 +92,16 @@ class FeatureLookUpModel:
 
     def load_data(self) -> None:
         """Load training and testing data from Delta tables."""
-        self.train_set = self.spark.table(f"{self.catalog_name}.{self.schema_name}.train_set").drop(
-            "total_items", "subtotal", "num_distinct_items"
-        )
-        self.test_set = self.spark.table(f"{self.catalog_name}.{self.schema_name}.test_set").toPandas()
+        self.train_set = self.spark.table(
+            f"{self.catalog_name}.{self.schema_name}.train_set"
+        ).drop("total_items", "subtotal", "num_distinct_items")
+        self.test_set = self.spark.table(
+            f"{self.catalog_name}.{self.schema_name}.test_set"
+        ).toPandas()
 
-        self.train_set = self.train_set.withColumn("id", self.train_set["id"].cast("string"))
+        self.train_set = self.train_set.withColumn(
+            "id", self.train_set["id"].cast("string")
+        )
 
         logger.info("✅ Data successfully loaded.")
 
@@ -124,9 +136,13 @@ class FeatureLookUpModel:
             self.test_set["total_outstanding_orders"] + 1e-5
         )
 
-        self.X_train = self.training_df[self.num_features + self.cat_features + ["dashers_per_order"]]
+        self.X_train = self.training_df[
+            self.num_features + self.cat_features + ["dashers_per_order"]
+        ]
         self.y_train = self.training_df[self.target]
-        self.X_test = self.test_set[self.num_features + self.cat_features + ["dashers_per_order"]]
+        self.X_test = self.test_set[
+            self.num_features + self.cat_features + ["dashers_per_order"]
+        ]
         self.y_test = self.test_set[self.target]
 
         logger.info("✅ Feature engineering completed.")
@@ -154,7 +170,9 @@ class FeatureLookUpModel:
             verbose_feature_names_out=False,
         )
         self.preprocessor.set_output(transform="pandas")
-        catboost_regressor = CatBoostRegressor(**self.parameters, cat_features=self.cat_features)
+        catboost_regressor = CatBoostRegressor(
+            **self.parameters, cat_features=self.cat_features
+        )
         pipeline = Pipeline(
             steps=[
                 ("preprocessor", self.preprocessor),
