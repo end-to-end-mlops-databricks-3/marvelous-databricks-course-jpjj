@@ -29,14 +29,14 @@ from doordash_eta.config import ProjectConfig, Tags
 from doordash_eta.utils import adjust_predictions
 
 
-class HousePriceModelWrapper(mlflow.pyfunc.PythonModel):
+class DoorDashEtaModelWrapper(mlflow.pyfunc.PythonModel):
     """Wrapper class for machine learning models to be used with MLflow.
 
-    This class wraps a machine learning model for predicting house prices.
+    This class wraps a machine learning model for predicting estimated time of arrival.
     """
 
     def __init__(self, model: object) -> None:
-        """Initialize the HousePriceModelWrapper.
+        """Initialize the DoorDashEtaModelWrapper.
 
         :param model: The underlying machine learning model.
         """
@@ -212,8 +212,8 @@ class CustomModel:
             conda_env = _mlflow_conda_env(additional_pip_deps=additional_pip_deps)
 
             mlflow.pyfunc.log_model(
-                python_model=HousePriceModelWrapper(self.pipeline),
-                artifact_path="pyfunc-house-price-model",
+                python_model=DoorDashEtaModelWrapper(self.pipeline),
+                artifact_path="pyfunc-doordash-eta-model",
                 code_paths=self.code_paths,
                 conda_env=conda_env,
                 signature=signature,
@@ -227,7 +227,7 @@ class CustomModel:
         """
         logger.info("🔄 Registering the model in UC...")
         registered_model = mlflow.register_model(
-            model_uri=f"runs:/{self.run_id}/pyfunc-house-price-model",
+            model_uri=f"runs:/{self.run_id}/pyfunc-doordash-eta-model",
             name=f"{self.catalog_name}.{self.schema_name}.doordash_eta_model_custom",
             tags=self.tags,
         )
