@@ -29,12 +29,8 @@ test_data = {
 
 pandas_df = pd.DataFrame([test_data])
 
-payload_dataframe_split = json.dumps(
-    {"dataframe_split": pandas_df.to_dict(orient="split")}
-)
-payload_dataframe_records = json.dumps(
-    {"dataframe_records": pandas_df.to_dict(orient="records")}
-)
+payload_dataframe_split = json.dumps({"dataframe_split": pandas_df.to_dict(orient="split")})
+payload_dataframe_records = json.dumps({"dataframe_records": pandas_df.to_dict(orient="records")})
 
 
 @pytest.mark.ci_exclude
@@ -112,9 +108,7 @@ def test_inference_server_invocations_with_dataframe_records() -> None:
 
 
 @pytest.mark.ci_exclude
-def test_inference_server_invocations_with_dataframe_records_should_fail_when_contact_request_violation() -> (
-    None
-):
+def test_inference_server_invocations_with_dataframe_records_should_fail_when_contact_request_violation() -> None:
     """Test that inference server invocations with incomplete DataFrame records fail as expected.
 
     Drops each column from the DataFrame in turn and verifies that the server returns a 400 error.
@@ -122,9 +116,7 @@ def test_inference_server_invocations_with_dataframe_records_should_fail_when_co
     for col in pandas_df.columns.to_list():
         tmp_df = pandas_df.drop(columns=[col])
 
-        tmp_payload_dataframe_records = json.dumps(
-            {"dataframe_records": tmp_df.to_dict(orient="records")}
-        )
+        tmp_payload_dataframe_records = json.dumps({"dataframe_records": tmp_df.to_dict(orient="records")})
         logger.info(f"Testing with {col} dropped.")
         response = requests.post(
             f"{BASE_URL}/invocations",
@@ -132,9 +124,7 @@ def test_inference_server_invocations_with_dataframe_records_should_fail_when_co
             headers={"Content-Type": "application/json"},
             timeout=2,
         )
-        logger.info(
-            f"Received {response.status_code} with response of '{response.text}'."
-        )
+        logger.info(f"Received {response.status_code} with response of '{response.text}'.")
         assert response.status_code == 400
 
 

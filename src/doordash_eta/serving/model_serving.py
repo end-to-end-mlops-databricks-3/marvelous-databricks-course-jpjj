@@ -30,9 +30,7 @@ class ModelServing:
         :return: Latest version of the model as a string
         """
         client = mlflow.MlflowClient()
-        latest_version = client.get_model_version_by_alias(
-            self.model_name, alias="latest-model"
-        ).version
+        latest_version = client.get_model_version_by_alias(self.model_name, alias="latest-model").version
         print(f"Latest model version: {latest_version}")
         return latest_version
 
@@ -48,13 +46,8 @@ class ModelServing:
         :param workload_size: Workload size (number of concurrent requests), defaults to "Small"
         :param scale_to_zero: If True, endpoint scales to 0 when unused, defaults to True
         """
-        endpoint_exists = any(
-            item.name == self.endpoint_name
-            for item in self.workspace.serving_endpoints.list()
-        )
-        entity_version = (
-            self.get_latest_model_version() if version == "latest" else version
-        )
+        endpoint_exists = any(item.name == self.endpoint_name for item in self.workspace.serving_endpoints.list())
+        entity_version = self.get_latest_model_version() if version == "latest" else version
 
         served_entities = [
             ServedEntityInput(
@@ -73,6 +66,4 @@ class ModelServing:
                 ),
             )
         else:
-            self.workspace.serving_endpoints.update_config(
-                name=self.endpoint_name, served_entities=served_entities
-            )
+            self.workspace.serving_endpoints.update_config(name=self.endpoint_name, served_entities=served_entities)
