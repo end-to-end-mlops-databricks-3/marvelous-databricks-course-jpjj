@@ -47,7 +47,7 @@ tasks:
   clean:
     desc: "Clean up build artifacts, caches, and temporary files"
     cmds:
-      - rm -rf dist build coverage.xml test-reports tests/mlruns test-house_price
+      - rm -rf dist build coverage.xml test-reports tests/mlruns test-doordash_eta
       - find . -type d \( -name "*cache*" -o -name "*.dist-info" -o -name "*.egg-info" -o -name "*htmlcov" \) -not -path "*env/*" -exec rm -r {} + || true
       - find . -type f -name "*.pyc" -not -path "*env/*" -exec rm {} +
     silent: true
@@ -65,12 +65,13 @@ tasks:
     silent: false
 
   serve-latest-registered-model-locally:
-    desc: Download the latest registered model from MLflow to the folder namely test-house_price.
+    desc: Download the latest registered model from MLflow to the folder namely test-doordash_eta.
     cmds:
-      # Ensure the 'test-house_price' directory is clean and ready
+      # Ensure the 'test-doordash_eta' directory is clean and ready
       - rm -rf "test-{{.PACKAGE_IMPORT_NAME}}" && mkdir -p "test-{{.PACKAGE_IMPORT_NAME}}/my_model"
-      # Navigate to the directory where mlruns exists and download the model into 'test-house_price'
-      - cd tests && uv run mlflow artifacts download --artifact-uri "models:/dev.acikgozm_c3.house_prices_model_custom@latest-model" --dst-path "../test-{{.PACKAGE_IMPORT_NAME}}/my_model"
+      # Navigate to the directory where mlruns exists and download the model into 'test-doordash_eta'
+      # Reminder note -> "models:/{catalog_name}.{schema_name}.model_name" is the full model name. Please update it accordingly.
+      - cd tests && uv run mlflow artifacts download --artifact-uri "models:/dev.jenspete.doordash_eta_model_custom@latest-model" --dst-path "../test-{{.PACKAGE_IMPORT_NAME}}/my_model"
       - cd ..
       # Serve model with mlflow locally
       - cd "test-{{.PACKAGE_IMPORT_NAME}}" && uv run mlflow models serve -m my_model --port 5088
